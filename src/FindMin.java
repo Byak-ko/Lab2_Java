@@ -5,6 +5,8 @@ public class FindMin {
 
     public final int[] array;
 
+    private long min = 0;
+
 
     public FindMin(int arrayLength, int threadAmount) {
         this.arrayLength = arrayLength;
@@ -26,8 +28,6 @@ public class FindMin {
         }
         return min;
     }
-
-    private long min = 0;
 
     synchronized private long getMin() {//crit w
         while (getThreadCount()<threadNum){
