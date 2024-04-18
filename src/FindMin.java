@@ -4,8 +4,7 @@ public class FindMin {
     private final int threadNum;
 
     public final int[] array;
-
-    private long min = 0;
+    private long minArr[] = {0, 0};
 
 
     public FindMin(int arrayLength, int threadAmount) {
@@ -16,20 +15,22 @@ public class FindMin {
             array[i] = i;
         }
         Random random = new Random();
-        array[random.nextInt(arrayLength)]*=-1;
+        array[random.nextInt(arrayLength)]=-1;
     }
 
-    public long OneThread(int startIndex, int finishIndex){
+    public long[] OneThread(int startIndex, int finishIndex){
         long min =Long.MAX_VALUE;
         for(int i = startIndex; i < finishIndex; i++){
             if(min> array[i]){
                 min= array[i];
+                minArr[0]=i;
+                minArr[1]=min;
             }
         }
-        return min;
+        return minArr;
     }
 
-    synchronized private long getMin() {//crit w
+    synchronized private long[] getMin() {//crit w
         while (getThreadCount()<threadNum){
             try {
                 wait();
@@ -37,12 +38,13 @@ public class FindMin {
                 e.printStackTrace();
             }
         }
-        return min;
+        return minArr;
     }
 
-    synchronized public void collectMin(long min){
-        if(this.min>min){
-            this.min = min;
+    synchronized public void collectMin(long[] minArr){
+        if (this.minArr[1] > minArr[1]){
+            this.minArr[1] = minArr[1];
+            this.minArr[0] = minArr[0];
         }
     }
 
@@ -56,7 +58,7 @@ public class FindMin {
         return threadCount;
     }
 
-    public long threadMin(){
+    public long[] threadMin(){
         ThreadMin[] threadMins = new ThreadMin[threadNum];
         int len = arrayLength / threadNum;
         for (int i = 0; i < threadNum - 1; i++) {
@@ -65,6 +67,7 @@ public class FindMin {
         }
         threadMins[threadNum-1]= new ThreadMin(len*(threadNum-1), arrayLength, this);
         threadMins[threadNum-1].start();
-        return getMin();
+        minArr = getMin();
+        return minArr;
     }
 }

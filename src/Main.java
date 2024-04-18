@@ -5,13 +5,13 @@ public class Main {
         long time = System.currentTimeMillis();
 
         FindMin findMin = new FindMin(arrayLength, threadAmount);
-        long minIndex = findMin.OneThread(0, arrayLength);
+        long[] minArr = findMin.OneThread(0, arrayLength);
         time = System.currentTimeMillis() - time;
-        System.out.println(minIndex + " time:" + time);
+        System.out.println("Min Index: " + minArr[0] + " - Min Value: " + minArr[1] + " time:" + time);
 
         time = System.currentTimeMillis();
-        minIndex = findMin.threadMin();
+        minArr = findMin.threadMin();
         time = System.currentTimeMillis() - time;
-        System.out.println(minIndex + " time:" + time);
+        System.out.println("Min Index: " + minArr[0] + " - Min Value: " + minArr[1] + " time:" + time);
     }
 }

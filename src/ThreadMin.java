@@ -11,8 +11,8 @@ public class ThreadMin extends Thread {
 
     @Override
     public void run() {
-        long min = findMin.OneThread(startIndex, finishIndex);
-        findMin.collectMin(min);
+        long[] minArr = findMin.OneThread(startIndex, finishIndex);
+        findMin.collectMin(minArr);
         findMin.incThreadCount();
     }
 }
